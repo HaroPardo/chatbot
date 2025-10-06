@@ -1,0 +1,30 @@
+# API Keys y variables de entorno
+apikey.env
+.env
+*.env
+
+# Entornos virtuales de Python
+venv/
+env/
+.venv/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs y bases de datos
+*.log
+*.sqlite3
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
