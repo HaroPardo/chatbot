@@ -1,12 +1,7 @@
+# main.py
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
-import google.generativeai as genai
-import json
-import re
-from datetime import datetime
-import requests
-from config import Config  # Importar configuración
-
+from config import Config, client  # Importa la configuración y el cliente
 
 class WeatherChatbot:
     def __init__(self, root):
@@ -24,18 +19,15 @@ class WeatherChatbot:
     def setup_gemini(self):
         """Configurar la API de Gemini"""
         try:
-            if not Config.GEMINI_API_KEY:
-                raise ValueError("No se encontró la variable de entorno GEMINI_API_KEY.")
-            
-            genai.configure(api_key=Config.GEMINI_API_KEY)
-            self.model = genai.GenerativeModel(Config.MODEL_NAME)
-            self.chat = self.model.start_chat(history=[])
-            print("✅ Gemini configurado correctamente")
+            # Usa el nuevo cliente y sintaxis
+            self.chat = client.chats.create(model=Config.MODEL_NAME)
+            print("✅ Gemini configurado correctamente con modelo:", Config.MODEL_NAME)
         except Exception as e:
             messagebox.showerror("Error", f"Error configurando Gemini: {str(e)}")
     
     def create_widgets(self):
         """Crear los elementos de la interfaz gráfica"""
+        
         # Título
         title_label = tk.Label(
             self.root, 
@@ -86,13 +78,7 @@ class WeatherChatbot:
         self.send_button.pack(side=tk.RIGHT)
         
         # Mensaje de bienvenida
-        self.add_bot_message(
-            "¡Hola! Soy tu asistente del tiempo. 🌤️\n"
-            "Pregúntame sobre el clima en cualquier ciudad. Por ejemplo:\n"
-            "- ¿Qué tiempo hará en Madrid el próximo sábado?\n"
-            "- ¿Cómo está el clima en Barcelona hoy?\n"
-            "- Temperatura en Sevilla mañana"
-        )
+        self.add_bot_message("¡Hola! Soy tu asistente del tiempo. 🌤️\nPregúntame sobre el clima en cualquier ciudad. Por ejemplo:\n- ¿Qué tiempo hará en Madrid el próximo sábado?\n- ¿Cómo está el clima en Barcelona hoy?\n- Temperatura en Sevilla mañana")
     
     def send_message(self):
         """Enviar mensaje del usuario"""
@@ -121,8 +107,9 @@ class WeatherChatbot:
         self.send_button.config(state=tk.NORMAL)
     
     def get_gemini_response(self, user_message):
-        """Obtener respuesta de Gemini"""
+        """Obtener respuesta de Gemini usando la nueva biblioteca"""
         try:
+            # Prompt específico para el tiempo
             prompt = f"""
             Eres un especialista en meteorología. Responde preguntas SOBRE EL TIEMPO Y CLIMA únicamente.
             Si la pregunta no es sobre el tiempo, responde amablemente que solo puedes ayudar con temas meteorológicos.
@@ -133,6 +120,7 @@ class WeatherChatbot:
             estructura la respuesta de manera organizada.
             """
             
+            # Envía el mensaje usando la nueva sintaxis
             response = self.chat.send_message(prompt)
             return response.text
             
@@ -154,12 +142,10 @@ class WeatherChatbot:
         self.chat_area.config(state=tk.DISABLED)
         self.chat_area.see(tk.END)
 
-
 def main():
     root = tk.Tk()
     app = WeatherChatbot(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()
