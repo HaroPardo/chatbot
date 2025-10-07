@@ -70,7 +70,7 @@ pip install -r requirements.txt
 Create an apikey.env file in the project root:
 
 env
-# apikey.env
+apikey.env
 GEMINI_API_KEY=your_gemini_api_key_here
 WEATHERAPI_KEY=your_weatherapi_key_here
 Getting API Keys:
