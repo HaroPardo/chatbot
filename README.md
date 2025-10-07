@@ -52,16 +52,17 @@ WeatherAPI.com account and API key
 Git (for version control)
 
 ## 🚀 Installation & Setup
+   
 1. Clone the Repository
 bash
 git clone https://github.com/your-username/weather-chatbot.git
 cd weather-chatbot
+    
 2. Create Virtual Environment
-bash
-python -m venv venv
+   python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# OR
 venv\Scripts\activate    # Windows
+
 3. Install Dependencies
 bash
 pip install -r requirements.txt
